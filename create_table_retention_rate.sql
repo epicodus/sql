@@ -3,6 +3,7 @@ CREATE TABLE retention_rate AS
 SELECT
   display_name,
   status_label,
+  status_label NOT ILIKE 'dropped%' AND status_label NOT ILIKE 'expelled%' AND status_label NOT ILIKE 'part%' AS complete,
   custom_d_work_eligibility_usa,
   custom_d_age_legacy,
   custom_d_birth_date,
@@ -28,15 +29,3 @@ SELECT
   AND status_label NOT ILIKE 'Enrolled%';
 
 copy retention_rate to '/Users/mgoren/Desktop/sql/retention_rate.csv' CSV HEADER;
-
--- need to include demographics columns!
-
--- add bins and frequencies:
--- =countif(B:B,"employed*")
--- =countif(B:B,"previously*")
--- =countif(B:B,"graduated - no internship")
--- =countif(B:B,"non-reporting")
--- =countif(B:B,"unemployed*")
--- =countif(B:B,"part-time graduate")
--- =countif(B:B,"dropped*")
--- =countif(B:B,"expelled*")
