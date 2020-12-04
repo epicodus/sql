@@ -20,6 +20,6 @@ FROM (
 copy weeks_before_applied to '/Users/mgoren/Desktop/sql/weeks_before_applied.csv' CSV HEADER;
 
 -- then import into google sheets
--- create bins column counting up from 0 to max number of weeks
+-- create bins column counting up from 0 to 39, and then label next row >= 40
 -- create frequency column with calculation =FREQUENCY(F:F,G:G)
--- create chart w/ weeks on horiz axis (log scale), # of students on vert axis
+-- create chart w/ weeks on horiz axis, # of students on vert axis
