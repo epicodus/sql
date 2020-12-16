@@ -1,10 +1,10 @@
-DROP TABLE IF EXISTS retention_rate;
-CREATE TABLE retention_rate AS
+DROP TABLE IF EXISTS employment;
+CREATE TABLE employment AS
 SELECT
   display_name,
   status_label,
-  status_label NOT ILIKE 'dropped%' AND status_label NOT ILIKE 'expelled%' AND status_label NOT ILIKE 'part%' AS complete,
   LEFT(custom_s_cohort_starting, 10) AS cohort_start_date,
+  SUBSTRING(custom_s_cohort_current, 15, 10) AS cohort_end_date,
   SUBSTRING(custom_s_cohort_starting, 26, 3) AS campus,
   custom_s_cohort_applied AS cohort_applied,
   custom_s_cohort_starting AS cohort_starting,
@@ -26,8 +26,7 @@ SELECT
   custom_d_gender AS gender,
   custom_d_previous_job AS previous_job
   FROM close
-  WHERE custom_s_cohort_starting IS NOT NULL
-  AND status_label NOT ILIKE 'Applicant%'
-  AND status_label NOT ILIKE 'Enrolled%';
+  WHERE custom_e_date_of_1st_offer IS NOT NULL
+  AND custom_s_cohort_current IS NOT NULL;
 
-copy retention_rate to '/Users/mgoren/Desktop/sql/retention_rate.csv' CSV HEADER;
+copy employment to '/Users/mgoren/Desktop/sql/employment.csv' CSV HEADER;
