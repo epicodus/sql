@@ -3,9 +3,12 @@ CREATE TABLE employment AS
 SELECT
   display_name,
   status_label,
+  SUBSTRING(custom_s_cohort_starting, 26, 3) AS campus,
   LEFT(custom_s_cohort_starting, 10) AS cohort_start_date,
   SUBSTRING(custom_s_cohort_current, 15, 10) AS cohort_end_date,
-  SUBSTRING(custom_s_cohort_starting, 26, 3) AS campus,
+  custom_e_date_of_1st_offer AS date_of_1st_offer,
+  DATE(custom_e_date_of_1st_offer) - DATE(SUBSTRING(custom_s_cohort_current, 15, 10)) AS days_before_job,
+  (DATE(custom_e_date_of_1st_offer) - DATE(SUBSTRING(custom_s_cohort_current, 15, 10))) / 7 AS weeks_before_job,
   custom_s_cohort_applied AS cohort_applied,
   custom_s_cohort_starting AS cohort_starting,
   custom_s_cohort_current AS cohort_current,
