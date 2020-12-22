@@ -38,7 +38,8 @@ SELECT
   CASE
     WHEN custom_d_education IN ('high school diploma', 'Some college, no degree', 'some post high school but no degree or certificate', 'Postsecondary certificate', 'GED', 'High school diploma or equivalent', 'certificate (less than 2 years)', 'less than high school diploma', 'other') THEN 'no college degree'
     ELSE 'college degree'
-  END AS education_aggregate
+  END AS education_aggregate,
+  custom_s_cohort_starting != custom_s_cohort_current AS changed_cohort
   FROM close
   WHERE custom_s_cohort_starting IS NOT NULL
   AND status_label NOT ILIKE 'Applicant%'
