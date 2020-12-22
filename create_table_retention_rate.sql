@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS retention_rate;
 CREATE TABLE retention_rate AS
 SELECT
-  display_name,
-  status_label,
+  display_name AS name,
+  status_label AS status,
   status_label NOT ILIKE 'dropped%' AND status_label NOT ILIKE 'expelled%' AND status_label NOT ILIKE 'part%' AS complete,
   LEFT(custom_s_cohort_starting, 10) AS cohort_start_date,
   SUBSTRING(custom_s_cohort_starting, 26, 3) AS campus,
@@ -24,7 +24,21 @@ SELECT
   custom_d_race AS race,
   custom_d_education AS education,
   custom_d_gender AS gender,
-  custom_d_previous_job AS previous_job
+  custom_d_previous_job AS previous_job,
+  LEFT(custom_s_cohort_starting, 4) AS cohort_start_year,
+  CASE
+    WHEN custom_d_gender='Female' THEN 'Female'
+    WHEN custom_d_gender='Male' THEN 'Male'
+    ELSE 'Other'
+  END AS gender_aggregate,
+  CASE
+    WHEN custom_d_race='White' THEN 'White'
+    ELSE 'POC'
+  END as race_aggregate,
+  CASE
+    WHEN custom_d_education IN ('high school diploma', 'Some college, no degree', 'some post high school but no degree or certificate', 'Postsecondary certificate', 'GED', 'High school diploma or equivalent', 'certificate (less than 2 years)', 'less than high school diploma', 'other') THEN 'no college degree'
+    ELSE 'college degree'
+  END AS education_aggregate
   FROM close
   WHERE custom_s_cohort_starting IS NOT NULL
   AND status_label NOT ILIKE 'Applicant%'
